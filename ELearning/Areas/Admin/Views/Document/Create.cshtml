@@ -1,0 +1,189 @@
+﻿@using System.Web.Mvc
+@using BELibrary.Entity
+@model Document
+@{
+    ViewBag.Title = ViewBag.Key + " " + ViewBag.Element;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-control">
+
+                    <!--Nav tabs-->
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#post" aria-expanded="true">Bài viết </a></li>
+                    </ul>
+                </div>
+                <h3 class="panel-title">@ViewBag.Element</h3>
+            </div>
+            <div class="panel-body">
+
+                <form id="form">
+                    <div class="tab-content">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @if (ViewBag.isEdit)
+                        {
+                            <input type="hidden" value="true" name="isEdit" />
+                            <input type="hidden" value="@Model.Id" name="Id" />
+                        }
+                        else
+                        {
+                            <input type="hidden" value="false" name="isEdit" />
+                        }
+                        <div id="post" class="tab-pane fade active in">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="control-label">Tiêu đề</label>
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = 250 } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <label class="control-label">Đường dẫn tài liệu</label>
+                                                <div class="input-group date">
+                                                    @Html.EditorFor(model => model.UrlDocument, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = 250 } })
+                                                    <span class="input-group-addon" onclick="ChooseFile()">
+                                                        <i class="fa fa-upload fa-lg"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <label class="control-label">Môn học học</label>
+                                                @Html.DropDownList("SubjectId", (SelectList)ViewBag.Subjects, "---Select---", new { @class = "form-control", @required = "required" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <a class="btn btn-default btn-icon icon-lg fa fa-arrow-left fa-lg" href="/admin/document"></a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-success btn-labeled fa fa-send fa-lg btn-save" style="float: right;" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            function init() {
+
+                $(".btn-save").click(function () {
+                    const configs = [
+                        {
+                            "id": "Name",
+                            "rq": true,
+                            "maxLength": 250,
+                            "name": "Tiêu đề"
+                        },
+                        {
+                            "id": "UrlDocument",
+                            "rq": true,
+                            "maxLength": 250,
+                            "name": "Đường dẫn tài liệu"
+                        }
+                    ];
+
+                    for (let i = 0; i < configs.length; i++) {
+                        if (configs[i].rq) {
+                            const fnUpdateInfo = $('#' + configs[i].id);
+                            if (fnUpdateInfo.val() === "") {
+                                $.niftyNoty({
+                                    type: 'danger',
+                                    icon: 'fa fa-minus',
+                                    message: '<b>' + configs[i].name + '</b> không được trống',
+                                    container: 'floating',
+                                    timer: 3000
+                                });
+                                break;
+                            }
+                            if (fnUpdateInfo.val().length > configs[i].maxLength) {
+                                $.niftyNoty({
+                                    type: 'danger',
+                                    icon: 'fa fa-minus',
+                                    message: '<b>' + configs[i].name + ': ' + fnUpdateInfo.val().length + '</b> quá dài (Tiêu chuẩn: ' + configs[i].maxLength + ')',
+                                    container: 'floating',
+                                    timer: 3000
+                                });
+                                break;
+                            }
+                        }
+                    }
+                });
+            }
+
+            init();
+        });
+
+        function ChooseFile() {
+            const finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                $("#UrlDocument").val(fileUrl);
+            }
+            finder.popup();
+        }
+
+        $('#form')
+            .submit(function (e) {
+                e.preventDefault();
+                $(':input[type="submit"]').prop('disabled', true);
+                const formData = new FormData(this);
+                notify.loading();
+                $.ajax({
+                    url: '/admin/document/CreateOrEdit',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        if (response.status) {
+                            $.niftyNoty({
+                                type: 'success',
+                                icon: 'fa fa-check',
+                                message: response.mess,
+                                container: 'floating',
+                                timer: 3000
+                            });
+                            setTimeout(function () {
+                                window.location.href = '/admin/document';
+                            }, 1000);
+                        } else {
+                            $.niftyNoty({
+                                type: 'danger',
+                                icon: 'fa fa-minus',
+                                message: response.mess,
+                                container: 'floating',
+                                timer: 3000
+                            });
+                            $(':input[type="submit"]').prop('disabled', false);
+                        }
+                    },
+                    error: function () {
+                        notify.done();
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+    </script>
+}

@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var latestPosts = (List<Article>)ViewBag.LatestPosts ?? new List<Article>();
+}
+@using BELibrary.Entity
+@model BELibrary.Entity.Article
+
+<!-- Start main-content -->
+<div class="main-content">
+    <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/content/images/bg/bg3.jpg">
+        <div class="container pt-70 pb-20">
+            <!-- Section Content -->
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="title text-white">@Model.Title</h2>
+                        <ol class="breadcrumb text-left text-black mt-10">
+                            <li>
+                                <a href="/article">Home</a>
+                            </li>
+                            <li class="active text-gray-silver">@Model.Title</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Blog -->
+    <section>
+        <div class="container mt-30 mb-30 pt-30 pb-30">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="blog-posts single-post">
+                        <article class="post clearfix mb-0">
+                            <div class="entry-header">
+                                <div class="post-thumb thumb"> <img src="@Model.Image" alt="" class="img-responsive img-fullwidth"> </div>
+                            </div>
+                            <div class="entry-content">
+                                <div class="entry-meta media no-bg no-border mt-15 pb-20">
+                                    <div class="entry-date media-left text-center flip bg-theme-colored pt-5 pr-15 pb-5 pl-15">
+                                        <ul>
+                                            <li class="font-16 text-white font-weight-600">@Model.CreatedDate.Day</li>
+                                            <li class="font-12 text-white text-uppercase">@Model.CreatedDate.Month</li>
+                                        </ul>
+                                    </div>
+                                    <div class="media-body pl-15">
+                                        <div class="event-content pull-left flip">
+                                            <h3 class="entry-title text-white text-uppercase pt-0 mt-0"><a href="/article/detail?id=@Model.Id">@Model.Title</a></h3>
+                                            <span class="mb-10 text-gray-darkgray mr-10 font-13">
+                                                <i class="fa fa-user mr-5 text-theme-colored"></i> @Model.CreatedBy
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content-post">
+                                    @Html.Raw(Model.Content)
+                                </div>
+                                <div class="mt-30 mb-0">
+                                    <h5 class="pull-left flip mt-10 mr-20 text-theme-colored">Share:</h5>
+                                    <ul class="styled-icons icon-circled m-0">
+                                        <li><a href="#" data-bg-color="#3A5795"><i class="fa fa-facebook text-white"></i></a></li>
+                                        <li><a href="#" data-bg-color="#55ACEE"><i class="fa fa-twitter text-white"></i></a></li>
+                                        <li><a href="#" data-bg-color="#A11312"><i class="fa fa-google-plus text-white"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                        <div class="tagline p-0 pt-20 mt-5">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="tags">
+                                        <p class="mb-0"><i class="fa fa-tags text-theme-colored"></i> <span>Tags:</span> Law, Juggement, lawyer, Cases</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="share text-right flip">
+                                        <p><i class="fa fa-share-alt text-theme-colored"></i> Share</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="comments" class="comments-area pt-50">
+                            <h3 id="comments-title">
+                                Comments
+                            </h3>
+
+                            <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="100%" data-numposts="5"></div>
+                            <!-- Facebook Comments end -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="sidebar sidebar-right mt-sm-30">
+                        <div class="widget">
+                            <h5 class="widget-title line-bottom">Search box</h5>
+                            <div class="search-form">
+                                <form action="/article/index">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Click to Search" name="query" class="form-control search-input">
+                                        <span class="input-group-btn">
+                                            <button type="submit" class="btn search-button"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="widget">
+                            <h5 class="widget-title line-bottom">Latest News</h5>
+                            <div class="latest-posts">
+                                @foreach (var art in latestPosts)
+                                {
+                                    <article class="post media-post clearfix pb-0 mb-10">
+                                        <a class="post-thumb" href="#"><img src="@art.Image" alt="@art.Title"></a>
+                                        <div class="post-right">
+                                            <h5 class="post-title mt-0"><a href="#">@art.Title</a></h5>
+                                            @if (art.Description.Length >= 100)
+                                            {
+
+                                                <p>@art.Description.Substring(0, 100)...</p>
+                                            }
+                                            else
+                                            {
+                                                <p>@art.Description</p>
+                                            }
+                                        </div>
+                                    </article>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- end main-content -->

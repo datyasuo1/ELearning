@@ -1,0 +1,241 @@
+﻿@{
+    ViewBag.Title = "Giáo viên";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var query = ViewBag.QueryData ?? "";
+
+}
+
+@using BELibrary.Entity
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<User>
+
+<!-- Start main-content -->
+<div class="main-content">
+    <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/content/images/bg/bg3.jpg">
+        <div class="container pt-70 pb-20">
+            <!-- Section Content -->
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="title text-white">Teachers</h2>
+                        <ol class="breadcrumb text-left text-black mt-10">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Pages</a></li>
+                            <li class="active text-gray-silver">Page Title</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Team -->
+    <section id="team">
+        <div class="container">
+            <div class="row mtli-row-clearfix">
+                @foreach (var teacher in Model)
+                {
+                    <div class="col-xs-12 col-sm-6 col-md-3 sm-text-center mb-30 mb-sm-30">
+                        <div class="team maxwidth400">
+                            <div class="thumb">
+                                <a href="/teacher/detail?id=@teacher.Username">
+                                    <img class="img-fullwidth" src="@teacher.LinkAvata" alt="">
+                                </a>
+                            </div>
+
+                            <div class="content border-1px border-bottom-theme-color-2-2px p-15 bg-light clearfix">
+                                <h4 class="name text-theme-color-2 mt-0">@teacher.FullName - <small>Teacher</small></h4>
+                                <ul class="styled-icons icon-dark icon-circled icon-theme-colored icon-sm pull-left flip">
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                                <a class="btn btn-theme-colored btn-sm pull-right flip"
+                                   href="/teacher/detail?id=@teacher.Username">Xem chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="text-center">
+                @Html.PagedListPager(Model, page => "/teacher/index" + "?query=" + query + "&page=" + page)
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Funfact -->
+    <section class="divider parallax layer-overlay overlay-theme-colored-9" data-bg-img="images/bg/bg2.jpg" data-parallax-ratio="0.7">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-3 mb-md-50">
+                    <div class="funfact text-center">
+                        <i class="pe-7s-smile mt-5 text-theme-color-2"></i>
+                        <h2 data-animation-duration="2000" data-value="5248" class="animate-number text-white mt-0 font-38 font-weight-500">0</h2>
+                        <h5 class="text-white text-uppercase mb-0">Happy Students</h5>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 mb-md-50">
+                    <div class="funfact text-center">
+                        <i class="pe-7s-note2 mt-5 text-theme-color-2"></i>
+                        <h2 data-animation-duration="2000" data-value="675" class="animate-number text-white mt-0 font-38 font-weight-500">0</h2>
+                        <h5 class="text-white text-uppercase mb-0">Our Courses</h5>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 mb-md-50">
+                    <div class="funfact text-center">
+                        <i class="pe-7s-users mt-5 text-theme-color-2"></i>
+                        <h2 data-animation-duration="2000" data-value="248" class="animate-number text-white mt-0 font-38 font-weight-500">0</h2>
+                        <h5 class="text-white text-uppercase mb-0">Our Teachers</h5>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 mb-md-0">
+                    <div class="funfact text-center">
+                        <i class="pe-7s-cup mt-5 text-theme-color-2"></i>
+                        <h2 data-animation-duration="2000" data-value="24" class="animate-number text-white mt-0 font-38 font-weight-500">0</h2>
+                        <h5 class="text-white text-uppercase mb-0">Awards Won</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Why Choose Us -->
+    <section class="">
+        <div class="container pt-40">
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="pr-40">
+                            <h3 class="text-uppercase text-theme-colored title line-bottom">Our <span class="text-theme-color-2 font-weight-400">Features</span></h3>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="icon-box p-0 mb-30">
+                                        <a href="#" class="icon bg-theme-colored pull-left sm-pull-none flip">
+                                            <i class="pe-7s-scissors text-white"></i>
+                                        </a>
+                                        <div class="icon-box-details ml-sm-0">
+                                            <h5 class="icon-box-title mt-15 text-uppercase letter-space-1 font-weight-600 mb-5">Less CSS</h5>
+                                            <p class="text-gray">Lorem ipsum dolor sit amet, consectetur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="icon-box p-0 mb-30">
+                                        <a href="#" class="icon bg-theme-colored pull-left sm-pull-none flip">
+                                            <i class="pe-7s-pen text-white"></i>
+                                        </a>
+                                        <div class="icon-box-details ml-sm-0">
+                                            <h5 class="icon-box-title mt-15 text-uppercase letter-space-1 font-weight-600 mb-5">Special ShortCode</h5>
+                                            <p class="text-gray">Lorem ipsum dolor sit amet, consectetur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="icon-box p-0 mb-30">
+                                        <a href="#" class="icon bg-theme-colored pull-left sm-pull-none flip">
+                                            <i class="pe-7s-tools text-white"></i>
+                                        </a>
+                                        <div class="icon-box-details ml-sm-0">
+                                            <h5 class="icon-box-title mt-15 text-uppercase letter-space-1 font-weight-600 mb-5">Easy Customiz</h5>
+                                            <p class="text-gray">Lorem ipsum dolor sit amet, consectetur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="icon-box p-0 mb-30">
+                                        <a href="#" class="icon bg-theme-colored pull-left sm-pull-none flip">
+                                            <i class="pe-7s-phone text-white"></i>
+                                        </a>
+                                        <div class="icon-box-details ml-sm-0">
+                                            <h5 class="icon-box-title mt-15 text-uppercase letter-space-1 font-weight-600 mb-5">Responsive</h5>
+                                            <p class="text-gray">Lorem ipsum dolor sit amet, consectetur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="icon-box p-0 mb-30">
+                                        <a href="#" class="icon bg-theme-colored pull-left sm-pull-none flip">
+                                            <i class="pe-7s-vector text-white"></i>
+                                        </a>
+                                        <div class="icon-box-details ml-sm-0">
+                                            <h5 class="icon-box-title mt-15 text-uppercase letter-space-1 font-weight-600 mb-5">W3 validation</h5>
+                                            <p class="text-gray">Lorem ipsum dolor sit amet, consectetur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="icon-box p-0 mb-30">
+                                        <a href="#" class="icon bg-theme-colored pull-left sm-pull-none flip">
+                                            <i class="pe-7s-light text-white"></i>
+                                        </a>
+                                        <div class="icon-box-details ml-sm-0">
+                                            <h5 class="icon-box-title mt-15 text-uppercase letter-space-1 font-weight-600 mb-5">Retina Ready</h5>
+                                            <p class="text-gray">Lorem ipsum dolor sit amet, consectetur.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <h3 class="line-bottom">Why <span class="text-theme-color-2">Choose Us?</span></h3>
+                        <p class="mb-20">The Cweren Law Firm is a recognized leader in landlord tenant representation throughout Texas.The largest professional property.</p>
+                        <div id="accordion1" class="panel-group accordion">
+                            <div class="panel">
+                                <div class="panel-title"> <a class="active" data-parent="#accordion1" data-toggle="collapse" href="#accordion11" aria-expanded="true"> <span class="open-sub"></span> Why this Company is Best?</a> </div>
+                                <div id="accordion11" class="panel-collapse collapse in" role="tablist" aria-expanded="true">
+                                    <div class="panel-content">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore impedit quae repellendus provident dolor iure poss imusven am aliquam. Officiis totam ea laborum deser unt vonsess.  iure poss imusven am aliquam</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-title"> <a data-parent="#accordion1" data-toggle="collapse" href="#accordion12" class="" aria-expanded="true"> <span class="open-sub"></span> Why this Company is Best?</a> </div>
+                                <div id="accordion12" class="panel-collapse collapse" role="tablist" aria-expanded="true">
+                                    <div class="panel-content">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore impedit quae repellendus provident dolor iure poss imusven am aliquam. Officiis totam ea laborum deser unt vonsess.  iure poss imusven am aliquam</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel">
+                                <div class="panel-title"> <a data-parent="#accordion1" data-toggle="collapse" href="#accordion13" class="" aria-expanded="true"> <span class="open-sub"></span> Why this Company is Best?</a> </div>
+                                <div id="accordion13" class="panel-collapse collapse" role="tablist" aria-expanded="true">
+                                    <div class="panel-content">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore impedit quae repellendus provident dolor iure poss imusven am aliquam. Officiis totam ea laborum deser unt vonsess.  iure poss imusven am aliquam</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider: Clients -->
+    <section class="clients bg-theme-color-2">
+        <div class="container pt-10 pb-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Section: Clients -->
+                    <div class="owl-carousel-6col clients-logo transparent text-center owl-nav-top">
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w1.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w2.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w3.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w4.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w5.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w6.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w3.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w4.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w5.png" alt=""></a></div>
+                        <div class="item"> <a href="#"><img src="/Content/images/clients/w6.png" alt=""></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- end main-content -->

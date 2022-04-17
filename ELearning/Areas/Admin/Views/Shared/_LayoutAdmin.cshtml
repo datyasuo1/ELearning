@@ -1,0 +1,861 @@
+﻿@using BELibrary.Core.Utils
+@using BELibrary.Entity
+@using BELibrary.Utils
+@using ELearning.Areas.Admin.Authorization
+@{
+    var user = CookiesManage.GetUser() ?? new User();
+    var baseURL = "/Areas/Admin/lib";
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="shortcut icon" href="~/Content/images/favicon.png" />
+
+    <title>Admin | @(ViewBag.Title ?? "Trang quản trị")</title>
+
+    <!--STYLESHEET-->
+    <!--=================================================-->
+    <!--Open Sans Font [ OPTIONAL ]-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+    <link href="@baseURL/css/bootstrap.min.css" rel="stylesheet" />
+    <!--Bootstrap Stylesheet [ REQUIRED ]-->
+    <link href="@baseURL/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Nifty Stylesheet [ REQUIRED ]-->
+    <link href="@baseURL/css/nifty.min.css" rel="stylesheet">
+
+    <!--Nifty Premium Icon [ DEMONSTRATION ]-->
+    <link href="@baseURL/css/demo/nifty-demo-icons.min.css" rel="stylesheet">
+
+    <!--Select2 [ OPTIONAL ]-->
+    <link href="@baseURL/plugins/select2/css/select2.min.css" rel="stylesheet">
+
+    <!--Spinkit [ OPTIONAL ]-->
+    <link href="@baseURL/plugins/spinkit/css/spinkit.min.css" rel="stylesheet">
+
+    <!--=================================================-->
+    <!--Pace - Page Load Progress Par [OPTIONAL]-->
+    <link href="@baseURL/plugins/pace/pace.min.css" rel="stylesheet">
+
+    <script src="@baseURL/plugins/pace/pace.min.js"></script>
+
+    <!--Demo [ DEMONSTRATION ]-->
+    <link href="@baseURL/css/demo/nifty-demo.min.css" rel="stylesheet">
+
+    <!--Font Awesome [ OPTIONAL ]-->
+    <link href="@baseURL/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <!--DataTables [ OPTIONAL ]-->
+    <link href="/Areas/Admin/lib/plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/Areas/Admin/lib/plugins/datatables/extensions/Responsive/css/responsive.dataTables.min.css" rel="stylesheet">
+    <!--=================================================
+
+    REQUIRED
+    You must include this in your project.
+
+    RECOMMENDED
+    This category must be included but you may modify which plugins or components which should be included in your project.
+
+    OPTIONAL
+    Optional plugins. You may choose whether to include it in your project or not.
+
+    DEMONSTRATION
+    This is to be removed, used for demonstration purposes only. This category must not be included in your project.
+
+    SAMPLE
+    Some script samples which explain how to initialize plugins or components. This category should not be included in your project.
+
+    Detailed information and more samples can be found in the document.
+
+    =================================================-->
+    <style>
+        .fade-loading {
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100000
+        }
+
+        .floating-container {
+            z-index: 100001
+        }
+
+        .pad-5 {
+            padding: 5px;
+        }
+
+        .mg-5-2 {
+            margin: 5px 2px;
+        }
+
+        .mg-t-b-35-50 {
+            margin-top: 35px;
+            margin-bottom: 50px;
+        }
+
+        #cinema-form input, #cinema-form select {
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            color: black !important;
+            font-size: 14px !important;
+        }
+    </style>
+    @RenderSection("CSS", required: false)
+</head>
+<!--TIPS-->
+<!--You may remove all ID or Class names which contain "demo-", they are only used for demonstration. -->
+<body>
+    <div id="container" class="effect mainnav-lg">
+        <!--NAVBAR-->
+        <!--===================================================-->
+        <header id="navbar">
+            <div id="navbar-container" class="boxed">
+                <!--Brand logo & name-->
+                <!--================================-->
+                <div class="navbar-header">
+
+                    <a href="/admin" class="navbar-brand" style="text-align: center; background: antiquewhite;">
+                        <img src="~/Content/images/favicon.png" alt="Nifty Logo" class="brand-icon" style="float: none; display: inline-block; width: 29px; height: 29px; margin-top: 15px;">
+                    </a>
+                </div>
+                <!--================================-->
+                <!--End brand logo & name-->
+                <!--Navbar Dropdown-->
+                <!--================================-->
+                <div class="navbar-content clearfix">
+                    <ul class="nav navbar-top-links pull-left">
+                        <!--Navigation toogle button-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li class="tgl-menu-btn">
+                            <a class="mainnav-toggle" href="#">
+                                <i class="fa fa-navicon fa-lg"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-top-links">
+                        <li>
+                            <a href="/" target="_blank">
+                                <i class="demo-pli-home"></i>
+                            </a>
+                        </li>
+                        <!--Notification dropdown-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                <i class="demo-pli-bell"></i>
+                                <span class="badge badge-header badge-danger"></span>
+                            </a>
+
+                            <!--Notification dropdown menu-->
+                            <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                                <div class="nano scrollable has-scrollbar" style="height: 0px;">
+                                    <div class="nano-content" tabindex="0" style="right: -17px;">
+                                        <ul class="head-list">
+                                            <li>
+                                                <a href="#" class="media add-tooltip" data-title="Used space : 95%" data-container="body" data-placement="bottom" data-original-title="" title="">
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-data-settings icon-2x text-main"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="text-nowrap text-main text-semibold">HDD is full</p>
+                                                        <div class="progress progress-sm mar-no">
+                                                            <div style="width: 95%;" class="progress-bar progress-bar-danger">
+                                                                <span class="sr-only">95% Complete</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-file-edit icon-2x"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">Write a news article</p>
+                                                        <small>Last Update 8 hours ago</small>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <span class="label label-info pull-right">New</span>
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-speech-bubble-7 icon-2x"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">Comment Sorting</p>
+                                                        <small>Last Update 8 hours ago</small>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="media" href="#">
+                                                    <div class="media-left">
+                                                        <i class="demo-pli-add-user-star icon-2x"></i>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <p class="mar-no text-nowrap text-main text-semibold">New User Registered</p>
+                                                        <small>4 minutes ago</small>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="nano-pane" style="display: none;"><div class="nano-slider" style="height: 20px; transform: translate(0px, 0px);"></div></div>
+                                </div>
+
+                                <!--Dropdown footer-->
+                                <div class="pad-all bord-top">
+                                    <a href="#" class="btn-link text-main box-block">
+                                        <i class="pci-chevron chevron-right pull-right"></i>Show All Notifications
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End notifications dropdown-->
+                        <!--User dropdown-->
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <li id="dropdown-user" class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
+                                <span class="ic-user pull-right">
+                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                    <!--You can use an image instead of an icon.-->
+                                    <!--<img class="img-circle img-user media-object" src="img/profile-photos/1.png" alt="Profile Picture">-->
+                                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                    <i class="demo-pli-male"></i>
+                                </span>
+                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                                <!--You can also display a user name in the navbar.-->
+                                <!--<div class="username hidden-xs">Aaron Chavez</div>-->
+                                <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right panel-default">
+                                <ul class="head-list">
+                                    <li>
+                                        <a href="#" class="disable" style="cursor: not-allowed"><i class="demo-pli-male icon-lg icon-fw"></i> Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" style="cursor: not-allowed"><span class="badge badge-danger pull-right">9</span><i class="demo-pli-mail icon-lg icon-fw"></i> Messages</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" style="cursor: not-allowed"><span class="label label-success pull-right">New</span><i class="demo-pli-gear icon-lg icon-fw"></i> Settings</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" style="cursor: not-allowed"><i class="demo-pli-computer-secure icon-lg icon-fw"></i> Lock screen</a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Login/logout"><i class="demo-pli-unlock icon-lg icon-fw"></i> Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                        <!--End user dropdown-->
+                    </ul>
+                </div>
+                <!--================================-->
+                <!--End Navbar Dropdown-->
+            </div>
+        </header>
+        <!--===================================================-->
+        <!--END NAVBAR-->
+        <div class="boxed">
+            <!--CONTENT CONTAINER-->
+            <!--===================================================-->
+            <div id="content-container">
+                <div id="page-head">
+
+                    <!--Page Title-->
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <div id="page-title">
+                        <h1 class="page-header text-overflow">@ViewBag.Feature</h1>
+                    </div>
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <!--End page title-->
+                    <!--Breadcrumb-->
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <ol class="breadcrumb">
+                        <li><a href="#"><i class="demo-pli-home"></i></a></li>
+                        <li><a href="@ViewBag.BaseURL">@ViewBag.Element</a></li>
+                        <li class="active">@ViewBag.Feature</li>
+                    </ol>
+                    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                    <!--End breadcrumb-->
+                </div>
+
+                <!--Page content-->
+                <!--===================================================-->
+                <div id="page-content">
+
+                    @RenderBody()
+                </div>
+                <!--===================================================-->
+                <!--End page content-->
+            </div>
+            <!--===================================================-->
+            <!--END CONTENT CONTAINER-->
+            <!--MAIN NAVIGATION-->
+            <!--===================================================-->
+            <nav id="mainnav-container">
+                <div id="mainnav">
+                    <!--Shortcut buttons-->
+                    <!--================================-->
+                    @*<div id="mainnav-shortcut">
+                            <ul class="list-unstyled">
+                                <li class="col-xs-4" data-content="Notification">
+                                    <a id="demo-alert" class="shortcut-grid" href="#">
+                                        <i class="fa fa-bullhorn"></i>
+                                    </a>
+                                </li>
+                                <li class="col-xs-4" data-content="Page Alerts">
+                                    <a id="demo-page-alert" class="shortcut-grid" href="#">
+                                        <i class="fa fa-bell"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>*@
+                    <!--================================-->
+                    <!--End shortcut buttons-->
+                    <!--Menu-->
+                    <!--================================-->
+                    <div id="mainnav-menu-wrap" style="margin-top: 0px!important;padding-top:0px">
+                        <div class="nano">
+                            <div class="nano-content">
+
+                                <!--Profile Widget-->
+                                <!--================================-->
+                                <div id="mainnav-profile" class="mainnav-profile">
+                                    <div class="profile-wrap text-center">
+                                        <div class="pad-btm">
+                                            <img class="img-circle img-md" src="~/FileUploads/images/avatas/Dinh-Phuc-2_20200306104040188.png" alt="Profile Picture">
+                                        </div>
+                                        <a href="#profile-nav" class="box-block" data-toggle="collapse" aria-expanded="false">
+                                            <span class="pull-right dropdown-toggle">
+                                                <i class="dropdown-caret"></i>
+                                            </span>
+                                            <p class="mnp-name"> @user.FullName</p>
+                                        </a>
+                                    </div>
+                                    <div id="profile-nav" class="collapse list-group bg-trans">
+                                        <a href="#" class="list-group-item" style="cursor: not-allowed">
+                                            <i class="demo-pli-male icon-lg icon-fw"></i> View Profile
+                                        </a>
+                                        <a href="#" class="list-group-item" style="cursor: not-allowed">
+                                            <i class="demo-pli-gear icon-lg icon-fw"></i> Settings
+                                        </a>
+                                        <a href="#" class="list-group-item" style="cursor: not-allowed">
+                                            <i class="demo-pli-information icon-lg icon-fw"></i> Help
+                                        </a>
+                                        <a href="/Admin/Login/logout" class="list-group-item">
+                                            <i class="demo-pli-unlock icon-lg icon-fw"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <ul id="mainnav-menu" class="list-group">
+                                    @if (user.RoleId == RoleKey.Admin)
+                                    {
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("course") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-server"></i>
+                                                <span class="menu-title">QT Khóa học</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("course") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/course">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Khóa học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/course/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm khóa học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("subject") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-book"></i>
+                                                <span class="menu-title">QT Môn học</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("subject") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/subject">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Môn học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/subject/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm Môn học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("document") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-file-archive-o"></i>
+                                                <span class="menu-title">QT Tài liệu</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("document") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/document">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Tài liệu
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/document/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm tài liệu
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("lecture") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-video-camera"></i>
+                                                <span class="menu-title">QT Bài học</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("lecture") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/lecture">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Bài học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/lecture/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm Bài học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("assigned") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-calendar"></i>
+                                                <span class="menu-title">QT Phân công</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("assigned") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/assigned?role=@RoleKey.Teacher">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Phân công GV
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/assigned?role=@RoleKey.Student">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            HS Đăng ký
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("gallery") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-picture-o"></i>
+                                                <span class="menu-title">QT Bộ sưu tập</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("gallery") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/gallery">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Danh sách
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/gallery/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm mới
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("user") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-user"></i>
+                                                <span class="menu-title">QL Ngời dùng</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu Category-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("user") ? "collapse in" : "collapse")">
+                                                <li>
+                                                    <a href="/admin/user?role=@RoleKey.Admin">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            DS quản trị
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/user?role=@RoleKey.Teacher">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            DS Giáo viên
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/user?role=@RoleKey.Student">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            DS Học sinh
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("article") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-file-word-o"></i>
+                                                <span class="menu-title">QL Bài viết</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu Category-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("article") ? "collapse in" : "collapse")">
+                                                <li>
+                                                    <a href="/admin/article">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            DS bài viết
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/article/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm bài viết
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        @*<li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("system") ? "active" : "")">
+                                                <a href="/admin/system">
+                                                    <i class="fa fa-cog"></i>
+                                                    <span class="menu-title">QT hệ thống</span>
+                                                </a>
+                                            </li>*@
+                                        <li>
+                                            <a href="" data-target="#change-pass" data-toggle="modal">
+                                                <i class="fa fa-edit"></i>
+                                                <span class="menu-title">Đổi mật khẩu</span>
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("document") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-file-archive-o"></i>
+                                                <span class="menu-title">QT Tài liệu</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("document") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/document">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Tài liệu
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/document/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm tài liệu
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("lecture") ? "active" : "")">
+                                            <a href="#">
+                                                <i class="fa fa-video-camera"></i>
+                                                <span class="menu-title">QT Bài học</span>
+                                                <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu QT Bài viết-->
+                                            <ul class="@(ViewContext.RouteData.Values["controller"].ToString().ToLower().Equals("lecture") ? "collapse in" : "collapse")" aria-expanded="true">
+                                                <li>
+                                                    <a href="/admin/lecture">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Bài học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="/admin/lecture/create">
+                                                        <i class="fa fa-arrow-circle-right"></i>
+                                                        <span class="menu-title">
+                                                            Thêm Bài học
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+
+                                    <!--Menu list item-->
+                                    <li class="list-divider"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!--================================-->
+                    <!--End menu-->
+                </div>
+            </nav>
+            <!--===================================================-->
+            <!--END MAIN NAVIGATION-->
+        </div>
+
+        <!-- FOOTER -->
+        <!--===================================================-->
+        <footer id="footer">
+            <!-- Visible when footer positions are fixed -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <div class="show-fixed pull-right">
+                <ul class="footer-list list-inline">
+                    <li>
+                        <p class="text-sm">SEO Proggres</p>
+                        <div class="progress progress-sm progress-light-base">
+                            <div style="width: 80%" class="progress-bar progress-bar-danger"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <p class="text-sm">Online Tutorial</p>
+                        <div class="progress progress-sm progress-light-base">
+                            <div style="width: 80%" class="progress-bar progress-bar-primary"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <button class="btn btn-sm btn-dark btn-active-success">Checkout</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Visible when footer positions are static -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <!-- Remove the class name "show-fixed" and "hide-fixed" to make the content always appears. -->
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <p class="pad-lft">&#0169; @DateTime.Now.ToString("dd/MM/yyyy")</p>
+        </footer>
+        <!--===================================================-->
+        <!-- END FOOTER -->
+        <!-- SCROLL TOP BUTTON -->
+        <!--===================================================-->
+        <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+        <!--===================================================-->
+    </div>
+    <div class="modal fade" id="change-pass" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!--Modal header-->
+                <div class="modal-header">
+                    <button data-dismiss="modal" class="close" type="button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title">Đổi mật khẩu</h4>
+                </div>
+
+                <!--Modal body-->
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-sm-2">
+                            <input type="hidden" id="username" />
+                            <input type="hidden" />
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label">Mật khẩu cũ</label>
+                                <input type="password" id="old-pass" name="oldPass" class="form-control" autocomplete="off" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="hidden" />
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label">Mật khẩu mới</label>
+                                <input type="password" id="new-pass" name="newPass" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="hidden" />
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label">Nhập lại mật khẩu mới</label>
+                                <input type="password" id="re-new-pass" name="reNewPass" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+
+                <!--Modal footer-->
+                <div class="modal-footer">
+                    <button data-dismiss="modal" class="btn btn-default" type="button">Hủy</button>
+                    <button data-dismiss="modal" class="btn btn-primary" onclick="_changePass()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function _changePass() {
+            if ($("#new-pass").val() !== $("#re-new-pass").val()) {
+                notify.methods.warning._showDialog("Mật khẩu không khớp!", "../Account");
+                return;
+            }
+
+            dataSend = { oldPass: $("#old-pass").val(), newPass: $("#new-pass").val(), reNewPass: $("#re-new-pass").val() };
+            server.methods._request("POST", "/Login/ChangePass", dataSend, function (response) {
+                if (response.status === false) {
+                    notify.methods.warning._showDialog(response.mess, "../Login");
+                } else if (response.status === "login") {
+                    notify.methods.warning._showDialog(response.mess, "../Login/Logout");
+                    window.location.href = "../Login/Index";
+                }
+                else {
+                    notify.methods.success._showDialog(response.mess, "../Login");
+                }
+            }, function (response) { }, function (response) { });
+        }
+    </script>
+    <!--===================================================-->
+    <!-- END OF CONTAINER -->
+    <!-- SETTINGS - DEMO PURPOSE ONLY -->
+    <!--===================================================-->
+    <!--===================================================-->
+    <!-- END SETTINGS -->
+    <!--JAVASCRIPT-->
+    <!--=================================================-->
+    <!--jQuery [ REQUIRED ]-->
+    <!--JAVASCRIPT-->
+    <!--=================================================-->
+    <!--jQuery [ REQUIRED ]-->
+    <script src="@baseURL/js/jquery.min.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="@baseURL/js/bootstrap.min.js"></script>
+
+    <!--Select2 [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/select2/js/select2.min.js"></script>
+
+    <!--Masked Input [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/masked-input/jquery.maskedinput.min.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="@baseURL/plugins/ckeditor/ckeditor.js"></script>
+
+    <!--BootstrapJS [ RECOMMENDED ]-->
+    <script src="@baseURL/plugins/ckfinder/ckfinder.js"></script>
+
+    <!--NiftyJS [ RECOMMENDED ]-->
+    <script src="@baseURL/js/nifty.min.js"></script>
+
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/bootstrap-validator/bootstrapValidator.min.js"></script>
+
+    <!--Bootstrap Validator [ OPTIONAL ]-->
+    <script src="@baseURL/plugins/bootbox/bootbox.min.js"></script>
+
+    <!--=================================================-->
+    <!--Ajax Request-->
+    <script src="@baseURL/js/base/ajax.js"></script>
+    <!-- notify -->
+    <script src="@baseURL/js/base/notify.js"></script>
+    <!-- validate -->
+    <script src="@baseURL/js/base/validate.js"></script>
+    <!-- form-->
+    <script src="@baseURL/js/base/form.js"></script>
+
+    <script src="@baseURL/plugins/datatables/media/js/jquery.dataTables.js"></script>
+    <script src="@baseURL/plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+    <script src="@baseURL/plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+    <!-- Include scripts -->
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

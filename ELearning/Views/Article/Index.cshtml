@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "Bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var query = ViewBag.QueryData ?? "";
+    var latestPosts = (List<Article>)ViewBag.LatestPosts ?? new List<Article>();
+}
+
+@using BELibrary.Entity
+@using PagedList.Mvc
+@model PagedList.IPagedList<Article>
+<!-- Start main-content -->
+<div class="main-content">
+
+    <!-- Section: inner-header -->
+    <section class="inner-header divider parallax layer-overlay overlay-dark-5" data-bg-img="/Content/images/bg/bg3.jpg">
+        <div class="container pt-70 pb-20">
+            <!-- Section Content -->
+            <div class="section-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2 class="title text-white">Blog</h2>
+                        <ol class="breadcrumb text-left text-black mt-10">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Pages</a></li>
+                            <li class="active text-gray-silver">Page Title</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: News & Blog -->
+    <section id="news">
+        <div class="container">
+            <div class="section-content">
+                <div class="row">
+                    @foreach (var art in Model)
+                    {
+                        <div class="col-sm-6 col-md-4">
+                            <article class="post clearfix mb-30 mb-sm-30">
+                                <div class="entry-header">
+                                    <div class="post-thumb thumb">
+                                        <img src="@art.Image" alt="" class="img-responsive img-fullwidth">
+                                    </div>
+                                </div>
+                                <div class="entry-content p-20 pr-10 bg-lighter">
+                                    <div class="entry-meta media mt-0 no-bg no-border">
+                                        <div class="entry-date media-left text-center flip bg-theme-colored pt-5 pr-15 pb-5 pl-15">
+                                            <ul>
+                                                <li class="font-16 text-white font-weight-600 border-bottom">@art.CreatedDate.Day</li>
+                                                <li class="font-12 text-white text-uppercase">@art.CreatedDate.Month</li>
+                                            </ul>
+                                        </div>
+                                        <div class="media-body pl-15">
+                                            <div class="event-content pull-left flip">
+                                                <h4 class="entry-title text-white text-uppercase m-0 mt-5">
+                                                    <a href="/article/detail?id=@art.Id">@art.Title</a>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="mt-10">@art.Description</p>
+                                    <a href="/article/detail?id=@art.Id" class="btn-read-more">Xem thêm</a>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+
+                <div class="text-center">
+                    @Html.PagedListPager(Model, page => "/article/search" + "?query=" + query + "&page=" + page)
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- end main-content -->

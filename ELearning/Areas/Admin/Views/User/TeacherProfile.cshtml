@@ -1,0 +1,231 @@
+﻿@using System.Web.Mvc
+@using BELibrary.Core.Utils
+@using BELibrary.Entity
+@using BELibrary.Utils
+@model TeacherProfile
+@{
+    ViewBag.Title = ViewBag.Key + " " + ViewBag.Element;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="panel-control">
+
+                    <!--Nav tabs-->
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#post" aria-expanded="true">Bài viết </a></li>
+                        <li class=""><a data-toggle="tab" href="#content" aria-expanded="false">Nội dung <span class="badge badge-purple">1</span></a></li>
+                    </ul>
+                </div>
+                <h3 class="panel-title">@ViewBag.Element</h3>
+            </div>
+            <div class="panel-body">
+                <form id="form">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <input type="hidden" name="Username"  value="@Model.Username"/>
+                    <input type="hidden" name="Id"  value="@Model.Id"/>
+                    <div id="post" class="tab-pane fade active in">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Tên đăng nhập</label>
+                                            <input class="form-control text-box single-line" data-val="true" data-val-length-max="50" disabled="disabled" id="Username" maxlength="250"  type="text" value="@Model.Username"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Địa chỉ</label>
+                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = 250 } })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <label class="control-label">Điện thoại liên lạc</label>
+                                            @Html.EditorFor(model => model.ContactPhone, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = 250 } })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <label class="control-label">Email liên lạc</label>
+                                            @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control", @required = "required", @maxlength = 250 } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Giớ thiệu</label>
+                                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @id = "Description", @rows = "10", @placeholder = "Giớ thiệu" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Kinh nghiệm</label>
+                                            @Html.TextAreaFor(model => model.Experiences, new { @class = "form-control", @rows = "5", @placeholder = "Kinh nghiệm" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Fb link</label>
+                                            @Html.EditorFor(model => model.FacebookLink, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Twitter Link</label>
+                                            @Html.EditorFor(model => model.TwitterLink, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Skype Link</label>
+                                            @Html.EditorFor(model => model.SkypeLink, new { htmlAttributes = new { @class = "form-control", @maxlength = 250 } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <a class="btn btn-default btn-icon icon-lg fa fa-arrow-left fa-lg" href="/admin/user?role=@ViewBag.Role"></a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class="btn btn-success btn-labeled fa fa-send fa-lg btn-save" style="float: right;" type="submit">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function() {
+            function init() {
+
+                $("#Image").change(function() {
+                    const imgSrc = $("input[name=LinkAvata]").val();
+                    if (imgSrc !== "") {
+                        $("#Img").attr("src", imgSrc);
+                    }
+                });
+                $(".btn-save").click(function() {
+                    const configs = [
+                        {
+                            "id": "Name",
+                            "rq": true,
+                            "maxLength": 250,
+                            "name": "Tiêu đề"
+                        },
+                        {
+                            "id": "Image",
+                            "rq": true,
+                            "maxLength": 250,
+                            "name": "Ảnh đại diện"
+                        }
+                    ];
+
+                    for (let i = 0; i < configs.length; i++) {
+                        if (configs[i].rq) {
+                            const fnUpdateInfo = $(`#${configs[i].id}`);
+                            if (fnUpdateInfo.val() === "") {
+                                $.niftyNoty({
+                                    type: 'danger',
+                                    icon: 'fa fa-minus',
+                                    message: '<b>' + configs[i].name + '</b> không được trống',
+                                    container: 'floating',
+                                    timer: 3000
+                                });
+                                break;
+                            }
+                            if (fnUpdateInfo.val() && fnUpdateInfo.val().length > configs[i].maxLength) {
+                                $.niftyNoty({
+                                    type: 'danger',
+                                    icon: 'fa fa-minus',
+                                    message: '<b>' + configs[i].name + ': ' + fnUpdateInfo.val().length + '</b> quá dài (Tiêu chuẩn: ' + configs[i].maxLength + ')',
+                                    container: 'floating',
+                                    timer: 3000
+                                });
+                                break;
+                            }
+                        }
+                    }
+                });
+            }
+
+            init();
+        });
+
+        function ChooseImg() {
+            const finder = new CKFinder();
+            finder.selectActionFunction = function(fileUrl) {
+                $("#Img").attr("src", fileUrl);
+                $("#LinkAvata").val(fileUrl);
+            }
+            finder.popup();
+        }
+
+        $('#form')
+            .submit(function(e) {
+                e.preventDefault();
+                $(':input[type="submit"]').prop('disabled', true);
+                const formData = new FormData(this);
+                notify.loading();
+                $.ajax({
+                    url: '/admin/user/CreateOrEditTeacherProfile',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response.status) {
+                            $.niftyNoty({
+                                type: 'success',
+                                icon: 'fa fa-check',
+                                message: response.mess,
+                                container: 'floating',
+                                timer: 3000
+                            });
+                            setTimeout(function() {
+                                window.location.href = '/admin/user?role=@ViewBag.Role';
+                                },
+                                1000);
+                        } else {
+                            $.niftyNoty({
+                                type: 'danger',
+                                icon: 'fa fa-minus',
+                                message: response.mess,
+                                container: 'floating',
+                                timer: 3000
+                            });
+                            $(':input[type="submit"]').prop('disabled', false);
+                        }
+                    },
+                    error: function() {
+                        notify.done();
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+    </script>
+}
